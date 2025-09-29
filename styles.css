@@ -344,6 +344,43 @@ body {
     white-space: nowrap;
 }
 
+.wwww-world .world-icon {
+    font-size: 3rem;
+    position: fixed;
+    top: 30px;
+    right: 30px;
+    margin: 0;
+    z-index: 20;
+}
+
+.wwww-world .world-title {
+    background: linear-gradient(45deg, #FF6B35, #F7931E, #FFD700, #F7931E, #FF6B35);
+    background-size: 400% 400%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: orangeYellow 3s ease-in-out infinite;
+    letter-spacing: 3px;
+    filter: drop-shadow(2px 2px 0 rgba(255, 255, 255, 0.8)) 
+            drop-shadow(-2px -2px 0 rgba(255, 255, 255, 0.8)) 
+            drop-shadow(2px -2px 0 rgba(255, 255, 255, 0.8)) 
+            drop-shadow(-2px 2px 0 rgba(255, 255, 255, 0.8))
+            drop-shadow(0 0 10px rgba(255, 255, 255, 0.6));
+    position: fixed;
+    top: 25px;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0;
+    z-index: 20;
+    white-space: nowrap;
+}
+
+@keyframes orangeYellow {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
 @keyframes blueWhite {
     0% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
@@ -748,6 +785,61 @@ body {
     left: 38.0718%;
 }
 
+/* Interactive World Styling - Baseballs */
+.baseballs-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+}
+
+.baseball-clickable {
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    filter: 
+        drop-shadow(0 0 20px rgba(255, 255, 255, 0.8))
+        drop-shadow(0 0 40px rgba(255, 165, 0, 0.6))
+        drop-shadow(4px 4px 8px rgba(0, 0, 0, 0.8));
+    animation: pulse 2s ease-in-out infinite;
+    z-index: 10;
+}
+
+.baseball-clickable:hover {
+    transform: scale(1.3) translateY(-10px);
+    filter: 
+        drop-shadow(0 0 30px rgba(255, 255, 255, 1))
+        drop-shadow(0 0 60px rgba(255, 165, 0, 0.9))
+        drop-shadow(8px 8px 16px rgba(0, 0, 0, 0.8));
+    animation: none;
+}
+
+.baseball-clickable:active {
+    transform: scale(1.1) translateY(-5px);
+}
+
+/* Individual baseball positioning - arranged like players on a baseball field */
+.baseball-1 {
+    top: 75%;
+    left: 50%;
+    /* Home plate / Catcher position */
+}
+
+.baseball-2 {
+    top: 45%;
+    left: 35%;
+    /* Second base / Shortstop position */
+}
+
+.baseball-3 {
+    top: 45%;
+    left: 65%;
+    /* Second base / Second baseman position */
+}
+
 .cat-6 {
     top: 44.0743%;
     left: 76.7155%;
@@ -837,6 +929,12 @@ body {
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
     line-height: 1.6;
     text-align: center;
+}
+
+/* WWW World specific message styling */
+.wwww-world .message-content {
+    background: rgba(255, 140, 0, 0.95);
+    border: 6px solid #FF8C00;
 }
 
 /* Scroll to sections enhancement */

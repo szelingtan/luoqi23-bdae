@@ -11,42 +11,209 @@
     <div class="background-overlay"></div>
     
     <!-- WWW World Section -->
-    <section class="world-section wwww-world">
-        <div class="container">
-            <div class="hero-content">
-                <div class="world-icon">⚾</div>
-                <h2 class="world-title">WWW World</h2>
-                <button class="back-btn" onclick="window.location.href='index.html'">← Back to Home</button>
-                <div class="wishes-grid">
-                    <!-- WWW World Messages (5 messages) -->
-                    <div class="wish-card">
-                        <h3>Friend 11</h3>
-                        <p class="wish-message">Wishing you strength, courage, and an amazing birthday, Luoqi!</p>
-                    </div>
+    <section class="wwww-world">
+        <!-- Top UI -->
+        <div class="world-icon">⚾</div>
+        <h2 class="world-title">WWW World</h2>
+        <button class="back-btn" onclick="window.location.href='index.html'">← Back to Home</button>
+        
+        <!-- Scattered Baseballs -->
+        <div class="baseballs-container">
+            <img src="images/baseball_m.png" alt="Friend 11 Baseball" class="baseball-clickable baseball-1" onclick="showMessage(1)">
+            <img src="images/baseball_m.png" alt="Friend 12 Baseball" class="baseball-clickable baseball-2" onclick="showMessage(2)">
+            <img src="images/baseball_m.png" alt="Friend 13 Baseball" class="baseball-clickable baseball-3" onclick="showMessage(3)">
+        </div>
 
-                    <div class="wish-card">
-                        <h3>Friend 12</h3>
-                        <p class="wish-message">May your birthday be as refreshing as finding an oasis in the desert!</p>
-                    </div>
-
-                    <div class="wish-card">
-                        <h3>Friend 13</h3>
-                        <p class="wish-message">Happy Birthday, Luoqi! Time to party like it's a Minecraft festival!</p>
-                    </div>
-
-                    <div class="wish-card">
-                        <h3>Friend 14</h3>
-                        <p class="wish-message">May your new year be an adventure that reaches for the stars! Happy Birthday!</p>
-                    </div>
-
-                    <div class="wish-card">
-                        <h3>Friend 15</h3>
-                        <p class="wish-message">Happy Birthday to the king of our hearts! May happiness follow you everywhere!</p>
-                    </div>
-                </div>
+        <!-- Message Display -->
+        <div id="message-display" class="message-display hidden">
+            <div class="message-content">
+                <button class="close-btn" onclick="hideMessage()">×</button>
+                <h3 id="message-sender"></h3>
+                <p id="message-text"></p>
             </div>
         </div>
     </section>
+
+    <script>
+        const messages = {
+            1: {
+                sender: "Friend 11",
+                text: "Wishing you strength, courage, and an amazing birthday, Luoqi! Time to hit a home run this year!"
+            },
+            2: {
+                sender: "Friend 12", 
+                text: "May your birthday be as refreshing as finding an oasis in the desert! Swing for the fences!"
+            },
+            3: {
+                sender: "Friend 13",
+                text: "Happy Birthday, Luoqi! Time to party like it's a Minecraft festival meets the World Series!"
+            }
+        };
+
+        let isDragging = false;
+        let currentBaseball = null;
+        let startX = 0;
+        let startY = 0;
+        let startLeft = 0;
+        let startTop = 0;
+
+        // Load saved positions from localStorage
+        function loadBaseballPositions() {
+            const savedPositions = localStorage.getItem('baseballPositions');
+            if (savedPositions) {
+                const positions = JSON.parse(savedPositions);
+                Object.keys(positions).forEach(baseballId => {
+                    const baseball = document.querySelector(`.baseball-${baseballId}`);
+                    if (baseball && positions[baseballId]) {
+                        baseball.style.left = positions[baseballId].left;
+                        baseball.style.top = positions[baseballId].top;
+                        baseball.style.right = 'auto';
+                    }
+                });
+            }
+        }
+
+        // Save current positions to localStorage
+        function saveBaseballPositions() {
+            const positions = {};
+            for (let i = 1; i <= 3; i++) {
+                const baseball = document.querySelector(`.baseball-${i}`);
+                if (baseball) {
+                    positions[i] = {
+                        left: baseball.style.left || getComputedStyle(baseball).left,
+                        top: baseball.style.top || getComputedStyle(baseball).top
+                    };
+                }
+            }
+            localStorage.setItem('baseballPositions', JSON.stringify(positions));
+        }
+
+        // Initialize drag functionality
+        function initializeDragDrop() {
+            const baseballs = document.querySelectorAll('.baseball-clickable');
+            
+            baseballs.forEach(baseball => {
+                // Mouse events
+                baseball.addEventListener('mousedown', startDrag);
+                
+                // Touch events for mobile
+                baseball.addEventListener('touchstart', startDrag, { passive: false });
+            });
+
+            // Global mouse/touch events
+            document.addEventListener('mousemove', drag);
+            document.addEventListener('mouseup', endDrag);
+            document.addEventListener('touchmove', drag, { passive: false });
+            document.addEventListener('touchend', endDrag);
+        }
+
+        function startDrag(e) {
+            e.preventDefault();
+            
+            const event = e.type === 'touchstart' ? e.touches[0] : e;
+            currentBaseball = e.target;
+            isDragging = true;
+            
+            // Get initial positions
+            startX = event.clientX;
+            startY = event.clientY;
+            
+            const rect = currentBaseball.getBoundingClientRect();
+            startLeft = rect.left;
+            startTop = rect.top;
+            
+            // Visual feedback
+            currentBaseball.style.cursor = 'grabbing';
+            currentBaseball.style.opacity = '0.8';
+            currentBaseball.style.zIndex = '1000';
+            
+            // Prevent message popup during drag
+            currentBaseball.onclick = null;
+        }
+
+        function drag(e) {
+            if (!isDragging || !currentBaseball) return;
+            
+            e.preventDefault();
+            const event = e.type === 'touchmove' ? e.touches[0] : e;
+            
+            // Calculate new position
+            const deltaX = event.clientX - startX;
+            const deltaY = event.clientY - startY;
+            
+            const newLeft = startLeft + deltaX;
+            const newTop = startTop + deltaY;
+            
+            // Boundary checking
+            const container = document.querySelector('.wwww-world');
+            const containerRect = container.getBoundingClientRect();
+            const baseballRect = currentBaseball.getBoundingClientRect();
+            
+            const minLeft = 0;
+            const maxLeft = containerRect.width - baseballRect.width;
+            const minTop = 0;
+            const maxTop = containerRect.height - baseballRect.height;
+            
+            const boundedLeft = Math.max(minLeft, Math.min(maxLeft, newLeft));
+            const boundedTop = Math.max(minTop, Math.min(maxTop, newTop));
+            
+            // Convert to percentage for responsive design
+            const leftPercent = (boundedLeft / containerRect.width) * 100;
+            const topPercent = (boundedTop / containerRect.height) * 100;
+            
+            // Update position
+            currentBaseball.style.left = leftPercent + '%';
+            currentBaseball.style.top = topPercent + '%';
+            currentBaseball.style.right = 'auto';
+        }
+
+        function endDrag(e) {
+            if (!isDragging || !currentBaseball) return;
+            
+            isDragging = false;
+            
+            // Reset visual feedback
+            currentBaseball.style.cursor = 'pointer';
+            currentBaseball.style.opacity = '1';
+            currentBaseball.style.zIndex = '10';
+            
+            // Restore click functionality after a brief delay
+            const baseballId = currentBaseball.classList[1].split('-')[1]; // Extract number from baseball-X class
+            setTimeout(() => {
+                currentBaseball.onclick = () => showMessage(parseInt(baseballId));
+            }, 100);
+            
+            // Save new position
+            saveBaseballPositions();
+            
+            currentBaseball = null;
+        }
+
+        function showMessage(friendId) {
+            if (isDragging) return; // Don't show message if we're dragging
+            
+            const messageDisplay = document.getElementById('message-display');
+            const messageSender = document.getElementById('message-sender');
+            const messageText = document.getElementById('message-text');
+            
+            const message = messages[friendId];
+            messageSender.textContent = message.sender;
+            messageText.textContent = message.text;
+            
+            messageDisplay.classList.remove('hidden');
+        }
+
+        function hideMessage() {
+            const messageDisplay = document.getElementById('message-display');
+            messageDisplay.classList.add('hidden');
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            loadBaseballPositions();
+            initializeDragDrop();
+        });
+    </script>
 
 </body>
 </html>
