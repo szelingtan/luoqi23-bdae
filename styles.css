@@ -1,0 +1,528 @@
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Orbitron', monospace;
+    line-height: 1.6;
+    color: #2d5016;
+    background: url('images/minecraft-background.jpeg') center/cover no-repeat fixed;
+    position: relative;
+    min-height: 100vh;
+}
+
+.background-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(76, 175, 80, 0.1);
+    z-index: -1;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Hero Section */
+.hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+}
+
+.hero-content {
+    position: relative;
+    max-width: 800px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.title-image {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 40px;
+    filter: drop-shadow(4px 4px 8px rgba(0, 0, 0, 0.8));
+    border-radius: 15px;
+    max-height: 300px;
+}
+
+
+@keyframes rainbow {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* World Navigation Buttons */
+.world-buttons {
+    display: flex;
+    gap: 25px;
+    justify-content: center;
+    flex-wrap: nowrap;
+    max-width: 700px;
+}
+
+.world-btn {
+    background: rgba(0, 0, 0, 0.8);
+    border: 3px solid rgba(255, 255, 255, 0.6);
+    border-radius: 15px;
+    padding: 20px 25px;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    backdrop-filter: blur(15px);
+    box-shadow: 
+        0 10px 25px rgba(0, 0, 0, 0.4),
+        inset 0 2px 8px rgba(255, 255, 255, 0.1);
+    min-width: 160px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+    max-width: 200px;
+}
+
+.world-btn:hover {
+    transform: translateY(-8px) scale(1.05);
+    box-shadow: 
+        0 25px 50px rgba(0, 0, 0, 0.5),
+        inset 0 2px 8px rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.9);
+}
+
+.btn-icon {
+    font-size: 2.5rem;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4));
+}
+
+.btn-text {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.8rem;
+    font-weight: 400;
+    color: #ffffff;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    text-align: center;
+    line-height: 1.2;
+}
+
+/* World-specific button styling */
+.iex-btn:hover {
+    background: rgba(76, 175, 80, 0.3);
+    border-color: #4CAF50;
+}
+
+.vietnam-btn:hover {
+    background: rgba(255, 193, 7, 0.3);
+    border-color: #FFC107;
+}
+
+.wwww-btn:hover {
+    background: rgba(33, 150, 243, 0.3);
+    border-color: #2196F3;
+}
+
+.scroll-indicator {
+    margin-top: 60px;
+    animation: fadeInOut 3s infinite;
+}
+
+.scroll-indicator p {
+    color: #ffffff;
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+}
+
+.scroll-arrow {
+    font-size: 2rem;
+    animation: bounceArrow 2s infinite;
+}
+
+@keyframes fadeInOut {
+    0%, 100% { opacity: 0.7; }
+    50% { opacity: 1; }
+}
+
+@keyframes bounceArrow {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-10px);
+    }
+    60% {
+        transform: translateY(-5px);
+    }
+}
+
+/* World Sections */
+.world-section {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    padding: 50px 0;
+}
+
+.world-section .container {
+    position: relative;
+    z-index: 2;
+}
+
+.world-section .hero-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Back Button */
+.back-btn {
+    background: rgba(0, 0, 0, 0.8);
+    border: 3px solid rgba(255, 255, 255, 0.6);
+    border-radius: 12px;
+    padding: 12px 24px;
+    color: #ffffff;
+    font-family: 'Orbitron', monospace;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 20px;
+    backdrop-filter: blur(10px);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.back-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.9);
+    transform: translateY(-2px);
+}
+
+/* IEx World - Panda Theme */
+.iex-world {
+    background: url('images/panda-bg.png') center/cover no-repeat fixed;
+    position: relative;
+    min-height: 100vh;
+}
+
+/* NOC World - Cat Theme */
+.vietnam-world {
+    background: url('images/cat.png?v=2') center/cover no-repeat fixed;
+    background-size: cover;
+    background-position: center center;
+    position: relative;
+    min-height: 100vh;
+}
+
+/* WWW World - Baseball Theme */
+.wwww-world {
+    background: url('images/baseball.jpeg') center/cover no-repeat fixed;
+    position: relative;
+    min-height: 100vh;
+}
+
+.world-header {
+    text-align: center;
+    margin-bottom: 80px;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 40px;
+    border-radius: 20px;
+    border: 6px solid rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(15px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+.world-icon {
+    font-size: 6rem;
+    margin-bottom: 20px;
+    filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.4));
+    animation: float 3s ease-in-out infinite;
+}
+
+.world-title {
+    font-size: 4rem;
+    font-weight: 900;
+    background: linear-gradient(45deg, #FFD700, #FFA500, #FF6B6B, #4ECDC4, #45B7D1);
+    background-size: 400% 400%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: rainbow 4s ease-in-out infinite;
+    text-shadow: 
+        4px 4px 0 rgba(0, 0, 0, 0.8),
+        8px 8px 20px rgba(0, 0, 0, 0.6);
+    letter-spacing: 3px;
+    filter: drop-shadow(3px 3px 6px rgba(0, 0, 0, 0.8));
+}
+
+.wishes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 40px;
+    margin-bottom: 40px;
+}
+
+.wish-card {
+    background: rgba(0, 0, 0, 0.7);
+    border: 4px solid rgba(255, 255, 255, 0.4);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 
+        0 15px 35px rgba(0, 0, 0, 0.4),
+        inset 0 2px 8px rgba(255, 255, 255, 0.1);
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(15px);
+}
+
+.wish-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent 25%, rgba(255, 255, 255, 0.05) 25%, rgba(255, 255, 255, 0.05) 50%, transparent 50%, transparent 75%, rgba(255, 255, 255, 0.05) 75%);
+    background-size: 30px 30px;
+    pointer-events: none;
+}
+
+.wish-card:hover {
+    transform: translateY(-10px) scale(1.03);
+    box-shadow: 
+        0 25px 50px rgba(0, 0, 0, 0.5),
+        inset 0 2px 8px rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.8);
+}
+
+.wish-card h3 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #FFEB3B;
+    text-shadow: 2px 2px 0 #F57F17;
+    margin-bottom: 20px;
+    text-align: center;
+    background: rgba(255, 235, 59, 0.2);
+    padding: 15px;
+    border-radius: 12px;
+    border: 2px solid rgba(255, 235, 59, 0.3);
+}
+
+.wish-message {
+    font-size: 1.1rem;
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 25px;
+    border-radius: 12px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    line-height: 1.7;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+    min-height: 100px;
+    display: flex;
+    align-items: center;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+/* Footer */
+.footer {
+    background: rgba(0, 0, 0, 0.8);
+    border-top: 8px solid #FFEB3B;
+    padding: 60px 0;
+    text-align: center;
+    backdrop-filter: blur(15px);
+}
+
+.footer p {
+    font-size: 1.5rem;
+    color: #FFEB3B;
+    font-weight: 700;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    background: rgba(255, 235, 59, 0.1);
+    border: 3px solid rgba(255, 235, 59, 0.3);
+    border-radius: 15px;
+    padding: 30px;
+    display: inline-block;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(10px);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .title-image {
+        max-height: 200px;
+        margin-bottom: 30px;
+    }
+    
+    .name {
+        font-size: 2.5rem;
+        letter-spacing: 2px;
+        margin-bottom: 40px;
+    }
+    
+    .world-buttons {
+        gap: 15px;
+        flex-direction: row;
+        justify-content: center;
+        max-width: 100%;
+    }
+    
+    .world-btn {
+        min-width: 120px;
+        max-width: 150px;
+        padding: 20px 15px;
+        flex: 1;
+    }
+    
+    .btn-icon {
+        font-size: 2.5rem;
+    }
+    
+    .btn-text {
+        font-size: 0.7rem;
+    }
+    
+    .world-title {
+        font-size: 2.5rem;
+    }
+    
+    .world-icon {
+        font-size: 4rem;
+    }
+    
+    .world-header {
+        padding: 30px 20px;
+    }
+    
+    .wishes-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+    
+    .wish-card {
+        padding: 25px;
+    }
+    
+    .wish-card h3 {
+        font-size: 1.5rem;
+    }
+    
+    .wish-message {
+        font-size: 1rem;
+        padding: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .title-image {
+        max-height: 150px;
+        margin-bottom: 25px;
+    }
+    
+    .name {
+        font-size: 1.8rem;
+        letter-spacing: 1px;
+    }
+    
+    .world-title {
+        font-size: 2rem;
+    }
+    
+    .world-icon {
+        font-size: 3rem;
+    }
+    
+    .hero-content {
+        padding: 40px 20px;
+        margin: 15px;
+    }
+    
+    .world-header {
+        padding: 25px 15px;
+    }
+    
+    .wish-card {
+        padding: 20px;
+    }
+    
+    .wish-card h3 {
+        font-size: 1.3rem;
+        padding: 12px;
+    }
+    
+    .wish-message {
+        font-size: 0.95rem;
+        padding: 18px;
+        min-height: 80px;
+    }
+    
+    .footer p {
+        font-size: 1.2rem;
+        padding: 20px;
+    }
+}
+
+/* Special World Animations */
+.wish-card:nth-child(odd) {
+    animation: slideInLeft 0.8s ease-out;
+}
+
+.wish-card:nth-child(even) {
+    animation: slideInRight 0.8s ease-out;
+}
+
+@keyframes slideInLeft {
+    0% {
+        transform: translateX(-100px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideInRight {
+    0% {
+        transform: translateX(100px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Scroll to sections enhancement */
+@media (prefers-reduced-motion: no-preference) {
+    html {
+        scroll-behavior: smooth;
+    }
+}
