@@ -11,42 +11,223 @@
     <div class="background-overlay"></div>
     
     <!-- NOC World Section -->
-    <section class="world-section vietnam-world">
-        <div class="container">
-            <div class="hero-content">
-                <div class="world-icon">🐱</div>
-                <h2 class="world-title">NOC World</h2>
-                <button class="back-btn" onclick="window.location.href='index.html'">← Back to Home</button>
-                <div class="wishes-grid">
-                    <!-- NOC World Messages (5 messages) -->
-                    <div class="wish-card">
-                        <h3>Friend 6</h3>
-                        <p class="wish-message">Wishing you an epic birthday adventure, Luoqi! Time to celebrate!</p>
-                    </div>
+    <section class="vietnam-world">
+        <!-- Top UI -->
+        <div class="world-icon">🐱</div>
+        <h2 class="world-title">NOC World</h2>
+        <button class="back-btn" onclick="window.location.href='index.html'">← Back to Home</button>
+        
+        <!-- Scattered Cats -->
+        <div class="cats-container">
+            <img src="images/cat_m.png" alt="Friend 7 Cat" class="cat-clickable cat-1" onclick="showMessage(7)">
+            <img src="images/cat_m.png" alt="Friend 8 Cat" class="cat-clickable cat-2" onclick="showMessage(8)">
+            <img src="images/cat_m.png" alt="Friend 9 Cat" class="cat-clickable cat-3" onclick="showMessage(9)">
+            <img src="images/cat_m.png" alt="Friend 10 Cat" class="cat-clickable cat-4" onclick="showMessage(10)">
+            <img src="images/cat_m.png" alt="Friend 11 Cat" class="cat-clickable cat-5" onclick="showMessage(11)">
+            <img src="images/cat_m.png" alt="Friend 12 Cat" class="cat-clickable cat-6" onclick="showMessage(12)">
+        </div>
 
-                    <div class="wish-card">
-                        <h3>Friend 7</h3>
-                        <p class="wish-message">Happy Birthday! May this new year bring you growth, happiness, and lots of adventures!</p>
-                    </div>
-
-                    <div class="wish-card">
-                        <h3>Friend 8</h3>
-                        <p class="wish-message">Hope your birthday is filled with surprises as exciting as finding a stronghold!</p>
-                    </div>
-
-                    <div class="wish-card">
-                        <h3>Friend 9</h3>
-                        <p class="wish-message">Shooting birthday wishes your way, Luoqi! Have the best day ever!</p>
-                    </div>
-
-                    <div class="wish-card">
-                        <h3>Friend 10</h3>
-                        <p class="wish-message">Happy Birthday! May your day be sweeter than a Minecraft cake!</p>
-                    </div>
-                </div>
+        <!-- Message Display -->
+        <div id="message-display" class="message-display hidden">
+            <div class="message-content">
+                <button class="close-btn" onclick="hideMessage()">×</button>
+                <h3 id="message-sender"></h3>
+                <p id="message-text"></p>
             </div>
         </div>
     </section>
 
+    <script>
+        const messages = {
+            7: {
+                sender: "Sutong",
+                text: "Happy Birthday Luoqi! Can't believe it's been a year since I've met you, time really flies! I'm really glad to have went on trips and do hackathons with you. You are someone we can always rely on, so it's really comforting to have you. I hope you achieve all your dreams in the year to come and see you back in Singapore soon!"
+            },
+            8: {
+                sender: "Nicholas", 
+                text: "Hope your birthday is filled with surprises as exciting as finding a hidden treasure, just like a clever cat!"
+            },
+            9: {
+                sender: "Zien",
+                text: "Shooting birthday wishes your way, Luoqi! May you land on your feet in every adventure, like a graceful cat!"
+            },
+            10: {
+                sender: "Val",
+                text: "Happy Birthday! May your day be as sweet and purr-fect as a contented cat in a sunbeam!"
+            },
+            11: {
+                sender: "Ying Xiu 11",
+                text: "Wishing you a birthday filled with nine lives worth of joy, adventure, and amazing memories!"
+            },
+            12: {
+                sender: "Eunice 12",
+                text: "Happy Birthday, Luoqi! May your curiosity lead you to wonderful discoveries, just like a playful cat!"
+            }
+        };
+
+        let isDragging = false;
+        let currentCat = null;
+        let startX = 0;
+        let startY = 0;
+        let startLeft = 0;
+        let startTop = 0;
+
+        // Load saved positions from localStorage
+        function loadCatPositions() {
+            const savedPositions = localStorage.getItem('catPositions');
+            if (savedPositions) {
+                const positions = JSON.parse(savedPositions);
+                Object.keys(positions).forEach(catId => {
+                    const cat = document.querySelector(`.cat-${catId}`);
+                    if (cat && positions[catId]) {
+                        cat.style.left = positions[catId].left;
+                        cat.style.top = positions[catId].top;
+                        cat.style.right = 'auto';
+                    }
+                });
+            }
+        }
+
+        // Save current positions to localStorage
+        function saveCatPositions() {
+            const positions = {};
+            for (let i = 1; i <= 6; i++) {
+                const cat = document.querySelector(`.cat-${i}`);
+                if (cat) {
+                    positions[i] = {
+                        left: cat.style.left || getComputedStyle(cat).left,
+                        top: cat.style.top || getComputedStyle(cat).top
+                    };
+                }
+            }
+            localStorage.setItem('catPositions', JSON.stringify(positions));
+        }
+
+        // Initialize drag functionality
+        function initializeDragDrop() {
+            const cats = document.querySelectorAll('.cat-clickable');
+            
+            cats.forEach(cat => {
+                // Mouse events
+                cat.addEventListener('mousedown', startDrag);
+                
+                // Touch events for mobile
+                cat.addEventListener('touchstart', startDrag, { passive: false });
+            });
+
+            // Global mouse/touch events
+            document.addEventListener('mousemove', drag);
+            document.addEventListener('mouseup', endDrag);
+            document.addEventListener('touchmove', drag, { passive: false });
+            document.addEventListener('touchend', endDrag);
+        }
+
+        function startDrag(e) {
+            e.preventDefault();
+            
+            const event = e.type === 'touchstart' ? e.touches[0] : e;
+            currentCat = e.target;
+            isDragging = true;
+            
+            // Get initial positions
+            startX = event.clientX;
+            startY = event.clientY;
+            
+            const rect = currentCat.getBoundingClientRect();
+            startLeft = rect.left;
+            startTop = rect.top;
+            
+            // Visual feedback
+            currentCat.style.cursor = 'grabbing';
+            currentCat.style.opacity = '0.8';
+            currentCat.style.zIndex = '1000';
+            
+            // Prevent message popup during drag
+            currentCat.onclick = null;
+        }
+
+        function drag(e) {
+            if (!isDragging || !currentCat) return;
+            
+            e.preventDefault();
+            const event = e.type === 'touchmove' ? e.touches[0] : e;
+            
+            // Calculate new position
+            const deltaX = event.clientX - startX;
+            const deltaY = event.clientY - startY;
+            
+            const newLeft = startLeft + deltaX;
+            const newTop = startTop + deltaY;
+            
+            // Boundary checking
+            const container = document.querySelector('.vietnam-world');
+            const containerRect = container.getBoundingClientRect();
+            const catRect = currentCat.getBoundingClientRect();
+            
+            const minLeft = 0;
+            const maxLeft = containerRect.width - catRect.width;
+            const minTop = 0;
+            const maxTop = containerRect.height - catRect.height;
+            
+            const boundedLeft = Math.max(minLeft, Math.min(maxLeft, newLeft));
+            const boundedTop = Math.max(minTop, Math.min(maxTop, newTop));
+            
+            // Convert to percentage for responsive design
+            const leftPercent = (boundedLeft / containerRect.width) * 100;
+            const topPercent = (boundedTop / containerRect.height) * 100;
+            
+            // Update position
+            currentCat.style.left = leftPercent + '%';
+            currentCat.style.top = topPercent + '%';
+            currentCat.style.right = 'auto';
+        }
+
+        function endDrag(e) {
+            if (!isDragging || !currentCat) return;
+            
+            isDragging = false;
+            
+            // Reset visual feedback
+            currentCat.style.cursor = 'pointer';
+            currentCat.style.opacity = '1';
+            currentCat.style.zIndex = '10';
+            
+            // Restore click functionality after a brief delay
+            const catId = currentCat.classList[1].split('-')[1]; // Extract number from cat-X class
+            setTimeout(() => {
+                currentCat.onclick = () => showMessage(parseInt(catId) + 6); // cat-1 -> friend 7, cat-2 -> friend 8, etc.
+            }, 100);
+            
+            // Save new position
+            saveCatPositions();
+            
+            currentCat = null;
+        }
+
+        function showMessage(friendId) {
+            if (isDragging) return; // Don't show message if we're dragging
+            
+            const messageDisplay = document.getElementById('message-display');
+            const messageSender = document.getElementById('message-sender');
+            const messageText = document.getElementById('message-text');
+            
+            const message = messages[friendId];
+            messageSender.textContent = message.sender;
+            messageText.textContent = message.text;
+            
+            messageDisplay.classList.remove('hidden');
+        }
+
+        function hideMessage() {
+            const messageDisplay = document.getElementById('message-display');
+            messageDisplay.classList.add('hidden');
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            loadCatPositions();
+            initializeDragDrop();
+        });
+    </script>
 </body>
 </html>

@@ -182,6 +182,15 @@ body {
     padding: 50px 0;
 }
 
+.iex-world {
+    height: 100vh;
+    min-height: 100vh;
+    max-height: 100vh;
+    overflow: hidden;
+    padding: 0;
+    position: relative;
+}
+
 .world-section .container {
     position: relative;
     z-index: 2;
@@ -197,18 +206,22 @@ body {
 /* Back Button */
 .back-btn {
     background: rgba(0, 0, 0, 0.8);
-    border: 3px solid rgba(255, 255, 255, 0.6);
-    border-radius: 12px;
-    padding: 12px 24px;
+    border: 2px solid rgba(255, 255, 255, 0.6);
+    border-radius: 10px;
+    padding: 8px 16px;
     color: #ffffff;
     font-family: 'Orbitron', monospace;
-    font-size: 1rem;
+    font-size: 0.9rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
     margin-top: 20px;
     backdrop-filter: blur(10px);
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+    position: fixed;
+    bottom: 30px;
+    left: 30px;
+    z-index: 20;
 }
 
 .back-btn:hover {
@@ -231,6 +244,10 @@ body {
     background-position: center center;
     position: relative;
     min-height: 100vh;
+    height: 100vh;
+    max-height: 100vh;
+    overflow: hidden;
+    padding: 0;
 }
 
 /* WWW World - Baseball Theme */
@@ -258,6 +275,16 @@ body {
     animation: float 3s ease-in-out infinite;
 }
 
+.iex-world .world-icon,
+.vietnam-world .world-icon {
+    font-size: 3rem;
+    position: fixed;
+    top: 30px;
+    right: 30px;
+    margin: 0;
+    z-index: 20;
+}
+
 .world-title {
     font-size: 4rem;
     font-weight: 900;
@@ -272,6 +299,61 @@ body {
         8px 8px 20px rgba(0, 0, 0, 0.6);
     letter-spacing: 3px;
     filter: drop-shadow(3px 3px 6px rgba(0, 0, 0, 0.8));
+}
+
+.iex-world .world-title {
+    background: linear-gradient(45deg, #45B7D1, #87CEEB, #B0E0E6, #87CEEB, #45B7D1);
+    background-size: 400% 400%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: blueWhite 3s ease-in-out infinite;
+    letter-spacing: 3px;
+    filter: drop-shadow(2px 2px 0 rgba(255, 255, 255, 0.8)) 
+            drop-shadow(-2px -2px 0 rgba(255, 255, 255, 0.8)) 
+            drop-shadow(2px -2px 0 rgba(255, 255, 255, 0.8)) 
+            drop-shadow(-2px 2px 0 rgba(255, 255, 255, 0.8))
+            drop-shadow(0 0 10px rgba(255, 255, 255, 0.6));
+    position: fixed;
+    top: 25px;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0;
+    z-index: 20;
+    white-space: nowrap;
+}
+
+.vietnam-world .world-title {
+    background: linear-gradient(45deg, #45B7D1, #B19CD9, #87CEEB, #DDA0DD, #45B7D1);
+    background-size: 400% 400%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: bluePurple 3s ease-in-out infinite;
+    letter-spacing: 3px;
+    filter: drop-shadow(2px 2px 0 rgba(255, 255, 255, 0.8)) 
+            drop-shadow(-2px -2px 0 rgba(255, 255, 255, 0.8)) 
+            drop-shadow(2px -2px 0 rgba(255, 255, 255, 0.8)) 
+            drop-shadow(-2px 2px 0 rgba(255, 255, 255, 0.8))
+            drop-shadow(0 0 10px rgba(255, 255, 255, 0.6));
+    position: fixed;
+    top: 15px;
+    left: 30px;
+    margin: 0;
+    z-index: 20;
+    white-space: nowrap;
+}
+
+@keyframes blueWhite {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+@keyframes bluePurple {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
 .wishes-grid {
@@ -487,6 +569,55 @@ body {
         font-size: 1.2rem;
         padding: 20px;
     }
+
+    .panda-clickable {
+        width: 80px;
+        height: 80px;
+    }
+
+    /* Adjust positions for mobile */
+    .panda-1 {
+        top: 20%;
+        left: 15%;
+    }
+
+    .panda-2 {
+        top: 25%;
+        right: 10%;
+    }
+
+    .panda-3 {
+        bottom: 45%;
+        left: 5%;
+    }
+
+    .panda-4 {
+        bottom: 30%;
+        right: 20%;
+    }
+
+    .panda-5 {
+        top: 45%;
+        left: 50%;
+    }
+
+    .panda-6 {
+        top: 15%;
+        left: 60%;
+    }
+
+    .message-content {
+        padding: 30px;
+        margin: 15px;
+    }
+
+    .message-content h3 {
+        font-size: 1rem;
+    }
+
+    .message-content p {
+        font-size: 0.9rem;
+    }
 }
 
 /* Special World Animations */
@@ -518,6 +649,198 @@ body {
         transform: translateX(0);
         opacity: 1;
     }
+}
+
+/* Interactive World Styling */
+.pandas-container,
+.cats-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+}
+
+.panda-clickable,
+.cat-clickable {
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    filter: 
+        drop-shadow(0 0 20px rgba(255, 255, 255, 0.8))
+        drop-shadow(0 0 40px rgba(76, 175, 80, 0.6))
+        drop-shadow(4px 4px 8px rgba(0, 0, 0, 0.8));
+    animation: pulse 2s ease-in-out infinite;
+    z-index: 10;
+}
+
+.panda-clickable:hover,
+.cat-clickable:hover {
+    transform: scale(1.3) translateY(-10px);
+    filter: 
+        drop-shadow(0 0 30px rgba(255, 255, 255, 1))
+        drop-shadow(0 0 60px rgba(76, 175, 80, 0.9))
+        drop-shadow(8px 8px 16px rgba(0, 0, 0, 0.8));
+    animation: none;
+}
+
+.panda-clickable:active,
+.cat-clickable:active {
+    transform: scale(1.1) translateY(-5px);
+}
+
+/* Individual panda positioning based on background */
+/* Two pandas on top of the background panda */
+.panda-1 {
+    top: 40%;
+    left: 45%;
+}
+
+.panda-2 {
+    top: 35%;
+    left: 48%;
+}
+
+/* One panda on the left grass area */
+.panda-3 {
+    top: 50%;
+    left: 10%;
+}
+
+/* One panda beside the big background panda */
+.panda-4 {
+    top: 45%;
+    left: 35%;
+}
+
+/* Two pandas on the bottom right grass patch */
+.panda-5 {
+    top: 70%;
+    right: 25%;
+}
+
+.panda-6 {
+    top: 65%;
+    right: 5%;
+}
+
+/* Individual cat positioning for NOC World */
+.cat-1 {
+    top: 25%;
+    left: 20%;
+}
+
+.cat-2 {
+    top: 40%;
+    right: 15%;
+}
+
+.cat-3 {
+    top: 55%;
+    left: 10%;
+}
+
+.cat-4 {
+    top: 30%;
+    left: 50%;
+}
+
+.cat-5 {
+    top: 70%;
+    right: 25%;
+}
+
+.cat-6 {
+    top: 15%;
+    right: 40%;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        filter: 
+            drop-shadow(0 0 20px rgba(255, 255, 255, 0.8))
+            drop-shadow(0 0 40px rgba(76, 175, 80, 0.6))
+            drop-shadow(4px 4px 8px rgba(0, 0, 0, 0.8));
+    }
+    50% {
+        filter: 
+            drop-shadow(0 0 30px rgba(255, 255, 255, 1))
+            drop-shadow(0 0 60px rgba(76, 175, 80, 0.8))
+            drop-shadow(4px 4px 8px rgba(0, 0, 0, 0.8));
+    }
+}
+
+.message-display {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    backdrop-filter: blur(10px);
+}
+
+.message-display.hidden {
+    display: none;
+}
+
+.message-content {
+    background: rgba(76, 175, 80, 0.95);
+    border: 6px solid #2E7D32;
+    border-radius: 20px;
+    padding: 40px;
+    max-width: 500px;
+    margin: 20px;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(15px);
+}
+
+.close-btn {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 1.5rem;
+    color: #ffffff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.close-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.1);
+}
+
+.message-content h3 {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 1.2rem;
+    color: #ffffff;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.message-content p {
+    font-family: 'Orbitron', monospace;
+    font-size: 1rem;
+    color: #ffffff;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
+    line-height: 1.6;
+    text-align: center;
 }
 
 /* Scroll to sections enhancement */

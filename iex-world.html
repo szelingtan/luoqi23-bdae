@@ -11,42 +11,223 @@
     <div class="background-overlay"></div>
     
     <!-- IEx World Section -->
-    <section class="world-section iex-world">
-        <div class="container">
-            <div class="hero-content">
-                <div class="world-icon">🐼</div>
-                <h2 class="world-title">IEx World</h2>
-                <button class="back-btn" onclick="window.location.href='index.html'">← Back to Home</button>
-                <div class="wishes-grid">
-                    <!-- IEx World Messages (5 messages) -->
-                    <div class="wish-card">
-                        <h3>Friend 1</h3>
-                        <p class="wish-message">Happy Birthday Luoqi! Hope your day is as awesome as finding diamonds in Minecraft!</p>
-                    </div>
+    <section class="iex-world">
+        <!-- Top UI -->
+        <div class="world-icon">🐼</div>
+        <h2 class="world-title">IEx World</h2>
+        <button class="back-btn" onclick="window.location.href='index.html'">← Back to Home</button>
+        
+        <!-- Scattered Pandas -->
+        <div class="pandas-container">
+            <img src="images/panda_m.png" alt="Friend 1 Panda" class="panda-clickable panda-1" onclick="showMessage(1)">
+            <img src="images/panda_m.png" alt="Friend 2 Panda" class="panda-clickable panda-2" onclick="showMessage(2)">
+            <img src="images/panda_m.png" alt="Friend 3 Panda" class="panda-clickable panda-3" onclick="showMessage(3)">
+            <img src="images/panda_m.png" alt="Friend 4 Panda" class="panda-clickable panda-4" onclick="showMessage(4)">
+            <img src="images/panda_m.png" alt="Friend 5 Panda" class="panda-clickable panda-5" onclick="showMessage(5)">
+            <img src="images/panda_m.png" alt="Friend 6 Panda" class="panda-clickable panda-6" onclick="showMessage(6)">
+        </div>
 
-                    <div class="wish-card">
-                        <h3>Friend 2</h3>
-                        <p class="wish-message">Wishing you a birthday filled with adventure and joy! May all your crafting recipes succeed!</p>
-                    </div>
-
-                    <div class="wish-card">
-                        <h3>Friend 3</h3>
-                        <p class="wish-message">Another year older, another level gained! Happy Birthday, Luoqi!</p>
-                    </div>
-
-                    <div class="wish-card">
-                        <h3>Friend 4</h3>
-                        <p class="wish-message">May your birthday be as rare and precious as a panda in Minecraft! Have an amazing day!</p>
-                    </div>
-
-                    <div class="wish-card">
-                        <h3>Friend 5</h3>
-                        <p class="wish-message">Happy Birthday! May you build wonderful memories this year, block by block!</p>
-                    </div>
-                </div>
+        <!-- Message Display -->
+        <div id="message-display" class="message-display hidden">
+            <div class="message-content">
+                <button class="close-btn" onclick="hideMessage()">×</button>
+                <h3 id="message-sender"></h3>
+                <p id="message-text"></p>
             </div>
         </div>
     </section>
 
+    <script>
+        const messages = {
+            1: {
+                sender: "Friend 1",
+                text: "Happy Birthday Luoqi! Hope your day is as awesome as finding diamonds in Minecraft!"
+            },
+            2: {
+                sender: "Friend 2", 
+                text: "Wishing you a birthday filled with adventure and joy! May all your crafting recipes succeed!"
+            },
+            3: {
+                sender: "Friend 3",
+                text: "Another year older, another level gained! Happy Birthday, Luoqi!"
+            },
+            4: {
+                sender: "Friend 4",
+                text: "May your birthday be as rare and precious as a panda in Minecraft! Have an amazing day!"
+            },
+            5: {
+                sender: "Friend 5",
+                text: "Happy Birthday! May you build wonderful memories this year, block by block!"
+            },
+            6: {
+                sender: "Friend 6",
+                text: "Wishing you an epic birthday adventure, Luoqi! Time to celebrate!"
+            }
+        };
+
+        let isDragging = false;
+        let currentPanda = null;
+        let startX = 0;
+        let startY = 0;
+        let startLeft = 0;
+        let startTop = 0;
+
+        // Load saved positions from localStorage
+        function loadPandaPositions() {
+            const savedPositions = localStorage.getItem('pandaPositions');
+            if (savedPositions) {
+                const positions = JSON.parse(savedPositions);
+                Object.keys(positions).forEach(pandaId => {
+                    const panda = document.querySelector(`.panda-${pandaId}`);
+                    if (panda && positions[pandaId]) {
+                        panda.style.left = positions[pandaId].left;
+                        panda.style.top = positions[pandaId].top;
+                        panda.style.right = 'auto';
+                    }
+                });
+            }
+        }
+
+        // Save current positions to localStorage
+        function savePandaPositions() {
+            const positions = {};
+            for (let i = 1; i <= 6; i++) {
+                const panda = document.querySelector(`.panda-${i}`);
+                if (panda) {
+                    positions[i] = {
+                        left: panda.style.left || getComputedStyle(panda).left,
+                        top: panda.style.top || getComputedStyle(panda).top
+                    };
+                }
+            }
+            localStorage.setItem('pandaPositions', JSON.stringify(positions));
+        }
+
+        // Initialize drag functionality
+        function initializeDragDrop() {
+            const pandas = document.querySelectorAll('.panda-clickable');
+            
+            pandas.forEach(panda => {
+                // Mouse events
+                panda.addEventListener('mousedown', startDrag);
+                
+                // Touch events for mobile
+                panda.addEventListener('touchstart', startDrag, { passive: false });
+            });
+
+            // Global mouse/touch events
+            document.addEventListener('mousemove', drag);
+            document.addEventListener('mouseup', endDrag);
+            document.addEventListener('touchmove', drag, { passive: false });
+            document.addEventListener('touchend', endDrag);
+        }
+
+        function startDrag(e) {
+            e.preventDefault();
+            
+            const event = e.type === 'touchstart' ? e.touches[0] : e;
+            currentPanda = e.target;
+            isDragging = true;
+            
+            // Get initial positions
+            startX = event.clientX;
+            startY = event.clientY;
+            
+            const rect = currentPanda.getBoundingClientRect();
+            startLeft = rect.left;
+            startTop = rect.top;
+            
+            // Visual feedback
+            currentPanda.style.cursor = 'grabbing';
+            currentPanda.style.opacity = '0.8';
+            currentPanda.style.zIndex = '1000';
+            
+            // Prevent message popup during drag
+            currentPanda.onclick = null;
+        }
+
+        function drag(e) {
+            if (!isDragging || !currentPanda) return;
+            
+            e.preventDefault();
+            const event = e.type === 'touchmove' ? e.touches[0] : e;
+            
+            // Calculate new position
+            const deltaX = event.clientX - startX;
+            const deltaY = event.clientY - startY;
+            
+            const newLeft = startLeft + deltaX;
+            const newTop = startTop + deltaY;
+            
+            // Boundary checking
+            const container = document.querySelector('.iex-world');
+            const containerRect = container.getBoundingClientRect();
+            const pandaRect = currentPanda.getBoundingClientRect();
+            
+            const minLeft = 0;
+            const maxLeft = containerRect.width - pandaRect.width;
+            const minTop = 0;
+            const maxTop = containerRect.height - pandaRect.height;
+            
+            const boundedLeft = Math.max(minLeft, Math.min(maxLeft, newLeft));
+            const boundedTop = Math.max(minTop, Math.min(maxTop, newTop));
+            
+            // Convert to percentage for responsive design
+            const leftPercent = (boundedLeft / containerRect.width) * 100;
+            const topPercent = (boundedTop / containerRect.height) * 100;
+            
+            // Update position
+            currentPanda.style.left = leftPercent + '%';
+            currentPanda.style.top = topPercent + '%';
+            currentPanda.style.right = 'auto';
+        }
+
+        function endDrag(e) {
+            if (!isDragging || !currentPanda) return;
+            
+            isDragging = false;
+            
+            // Reset visual feedback
+            currentPanda.style.cursor = 'pointer';
+            currentPanda.style.opacity = '1';
+            currentPanda.style.zIndex = '10';
+            
+            // Restore click functionality after a brief delay
+            const pandaId = currentPanda.classList[1].split('-')[1]; // Extract number from panda-X class
+            setTimeout(() => {
+                currentPanda.onclick = () => showMessage(parseInt(pandaId));
+            }, 100);
+            
+            // Save new position
+            savePandaPositions();
+            
+            currentPanda = null;
+        }
+
+        function showMessage(friendId) {
+            if (isDragging) return; // Don't show message if we're dragging
+            
+            const messageDisplay = document.getElementById('message-display');
+            const messageSender = document.getElementById('message-sender');
+            const messageText = document.getElementById('message-text');
+            
+            const message = messages[friendId];
+            messageSender.textContent = message.sender;
+            messageText.textContent = message.text;
+            
+            messageDisplay.classList.remove('hidden');
+        }
+
+        function hideMessage() {
+            const messageDisplay = document.getElementById('message-display');
+            messageDisplay.classList.add('hidden');
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            loadPandaPositions();
+            initializeDragDrop();
+        });
+    </script>
 </body>
 </html>
