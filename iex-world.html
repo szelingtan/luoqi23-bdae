@@ -29,6 +29,7 @@
 
         <!-- Message Display -->
         <div id="message-display" class="message-display hidden">
+            <div class="rain" id="rain"></div>
             <div class="message-content">
                 <button class="close-btn" onclick="hideMessage()">×</button>
                 <h3 id="message-sender"></h3>
@@ -215,12 +216,32 @@
             messageSender.textContent = message.sender;
             messageText.textContent = message.text;
             
+            startRain();
             messageDisplay.classList.remove('hidden');
         }
 
         function hideMessage() {
             const messageDisplay = document.getElementById('message-display');
             messageDisplay.classList.add('hidden');
+            stopRain();
+        }
+
+        function startRain() {
+            const rain = document.getElementById('rain');
+            rain.innerHTML = ''; // Clear existing rain
+            
+            // Create 10 falling pandas
+            for (let i = 0; i < 10; i++) {
+                const rainItem = document.createElement('img');
+                rainItem.src = 'images/panda_m.png';
+                rainItem.className = 'rain-item';
+                rain.appendChild(rainItem);
+            }
+        }
+
+        function stopRain() {
+            const rain = document.getElementById('rain');
+            rain.innerHTML = '';
         }
 
         // Initialize when page loads
