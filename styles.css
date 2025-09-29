@@ -691,70 +691,66 @@ body {
     transform: scale(1.1) translateY(-5px);
 }
 
-/* Individual panda positioning based on background */
-/* Two pandas on top of the background panda */
+/* Individual panda positioning based on user's custom arrangement */
 .panda-1 {
-    top: 40%;
-    left: 45%;
+    top: 76.6167%;
+    left: 66.2263%;
 }
 
 .panda-2 {
-    top: 35%;
-    left: 48%;
+    top: 26.6669%;
+    left: 18.7668%;
 }
 
-/* One panda on the left grass area */
 .panda-3 {
-    top: 50%;
-    left: 10%;
+    top: 26.7392%;
+    left: 32.8483%;
 }
 
-/* One panda beside the big background panda */
 .panda-4 {
-    top: 45%;
-    left: 35%;
+    top: 65.552%;
+    left: 51.6999%;
 }
 
-/* Two pandas on the bottom right grass patch */
 .panda-5 {
-    top: 70%;
-    right: 25%;
+    top: 62.7141%;
+    left: 80.7482%;
 }
 
 .panda-6 {
-    top: 65%;
-    right: 5%;
+    top: 79.2979%;
+    left: 86.6857%;
 }
 
-/* Individual cat positioning for NOC World */
+/* Individual cat positioning based on user's custom arrangement */
 .cat-1 {
-    top: 25%;
-    left: 20%;
+    top: 75.8797%;
+    left: 40.5404%;
 }
 
 .cat-2 {
-    top: 40%;
-    right: 15%;
+    top: 75.3956%;
+    left: 19.2258%;
 }
 
 .cat-3 {
-    top: 55%;
-    left: 10%;
+    top: 73.548%;
+    left: 64.0891%;
 }
 
 .cat-4 {
-    top: 30%;
-    left: 50%;
+    top: 25.7238%;
+    left: 22.1729%;
 }
 
 .cat-5 {
-    top: 70%;
-    right: 25%;
+    top: 20.8809%;
+    left: 38.0718%;
 }
 
 .cat-6 {
-    top: 15%;
-    right: 40%;
+    top: 44.0743%;
+    left: 76.7155%;
 }
 
 @keyframes pulse {
